@@ -3,26 +3,17 @@
 
 #include "intstack.h"
 #include <iostream>
+#include <cstring> 
+#include <string> 
 #include <stack>
+#include <typeinfo>
 
 //#include <cstdlib>
 using namespace std;
 
 int main() {
+//____________use_stack____________
     Stack s;
-    // stack<int> x;
-    // stack<int> y;
-    // x.emplace(111);
-    // x.emplace(222);
-    // y.emplace(900);
-    // y.emplace(800);
-    // x.swap(y);
-    // cout<<"x: ";
-    // while (!x.empty()) {
-	// 	cout << x.top() << " ";
-	// 	x.pop();
-	// }
-    // cout<<endl;
     s.push(10);
     s.push(20);
     s.pop();
@@ -30,13 +21,10 @@ int main() {
     s.pop();
     cout<<"s empty? "<<s.empty()<<endl;
     cout<<"expect 0. size: "<<s.size()<<endl;
-
-    s.pop();
     s.pop();
     cout<<"s next: ";s.get_next();
     s.push(9);
     s.push(8);
-    cout<<"expect 2. size: "<<s.size()<<endl;
     s.push(7);
     s.push(6);
     s.push(5);
@@ -46,7 +34,6 @@ int main() {
     s.push(1);
     s.push(0);
     s.push(11);
-    s.push(12);
     cout<<"expect 10. size: "<<s.size()<<endl;
     cout<<"s full? "<<s.full()<<endl;
 
@@ -55,5 +42,81 @@ int main() {
         s.pop();
     }
 
-    return 0;
-}
+
+
+//____________postfix______________
+// evaluate "5 2 - 3 *"
+    Stack post;
+    cout<<"Enter postfix>>  ";
+    char input[30], *tokens[15];
+    cin.getline(input, CAPACITY);
+    char *ptr = strtok(input, " ");
+    int count=0;
+    while (ptr != 0) {
+        tokens[count] = ptr;
+        ++count;
+        ptr = strtok(0, " ");
+    }
+
+    for(int i=0;i<count;i++){
+        int right,left;
+        char tok=*tokens[i];
+        if ((tok>='0')&&(tok<='9')){
+            int T=tok-'0';
+            post.push(T);
+        }else{
+            if (post.get_next()<2){cout<<"error!";break;}
+            else{
+                right = post.top();
+                post.pop();
+                left = post.top();
+                post.pop();
+                //cout<<"token: "<<tok<<endl;
+                if (tok=='+'){post.push(left+right);}
+                else if (tok=='-'){post.push(left-right);}
+                else if (tok=='*'){post.push(left*right);}
+                else if (tok=='/'){post.push(left/right);}
+                else {cerr<<"No such operator";break;}
+                }
+            }
+    }
+    cout<<"Result: "<<post.top();
+
+// i'm still confused about this postfix section
+// including this just in case...
+
+// evaluating "5 2 - 3 *"
+
+// start with an empty stack
+
+// Stack numbers;
+
+// // first two tokens- push "5 2":
+// numbers.push(5);
+// numbers.push(2);
+
+// // third token is calculation to do "-":
+// int right = numbers.top();
+// numbers.pop();
+// int left = numbers.top();
+// numbers.pop();
+// numbers.push(left - right);
+// //top is 3
+
+// // fourth token- push "3":
+// numbers.push(3);
+
+// // fifth is another calculation "*":
+// right = numbers.top();
+// numbers.pop();
+// left = numbers.top();
+// numbers.pop();
+// numbers.push(left * right);
+// //top is 9
+
+// // done - print result:
+// cout << numbers.top() << endl;
+
+
+//     return 0;
+// }

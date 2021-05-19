@@ -30,7 +30,7 @@ public:
         return next;
     }
     bool full() const{return next==10;}
-    void get_next() const {std::cout<<next<<std::endl;}
+    int get_next() const {return next;}
 private:
     int next, data[CAPACITY];
 };
