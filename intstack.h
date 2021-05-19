@@ -10,15 +10,27 @@
 #define INTSTACK_H
 
 #define CAPACITY 10
-
+#include <iostream>
+#include <typeinfo>
 class Stack {
 
 public:
     Stack() : next(0) { }
-    void push(int n) { data[next++] = n; }
-    void pop() { --next; }
+    void push(int n) {
+        if (next>=10){std::cout<<"Stack Overflow\n";
+        }else{data[next++] = n;}
+    }
+    void pop() {
+        if(next<=0){std::cout<<"Stack Underflow\n";
+        }else{--next;}
+    }
     int top() const { return data[next-1]; }
     bool empty() const { return next <= 0; }
+    int size() {
+        return next;
+    }
+    bool full() const{return next==10;}
+    void get_next() const {std::cout<<next<<std::endl;}
 private:
     int next, data[CAPACITY];
 };
