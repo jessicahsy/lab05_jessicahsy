@@ -22,7 +22,7 @@ int main() {
     cout<<"s empty? "<<s.empty()<<endl;
     cout<<"expect 0. size: "<<s.size()<<endl;
     s.pop();
-    cout<<"s next: ";s.get_next();
+    cout<<"s next: "<<s.get_next()<<endl;
     s.push(9);
     s.push(8);
     s.push(7);
@@ -62,10 +62,10 @@ int main() {
         int right,left;
         char tok=*tokens[i];
         if ((tok>='0')&&(tok<='9')){
-            int T=tok-'0';
-            post.push(T);
+            int T=tok-'0';                  //convert tok to int var so it can be
+            post.push(T);                   //pushed and/or used w/ arithmetic operations
         }else{
-            if (post.get_next()<2){cout<<"error!";break;}
+            if (post.get_next()<2){cout<<"bad expression: unexpected operator"<<endl;return 1;}
             else{
                 right = post.top();
                 post.pop();
@@ -76,11 +76,12 @@ int main() {
                 else if (tok=='-'){post.push(left-right);}
                 else if (tok=='*'){post.push(left*right);}
                 else if (tok=='/'){post.push(left/right);}
-                else {cerr<<"No such operator";break;}
+                else {cerr<<"bad expression: invalid char found"<<endl;return 1;}
                 }
             }
     }
-    cout<<"Result: "<<post.top();
+    if (post.get_next()!=1){cout<<"bad expression: operator expected"<<endl;return 1;}
+    cout<<"Result: "<<post.top()<<endl;
 
 // i'm still confused about this postfix section
 // including this just in case...
@@ -118,5 +119,5 @@ int main() {
 // cout << numbers.top() << endl;
 
 
-//     return 0;
-// }
+    return 0;
+}
